@@ -79,7 +79,11 @@ export default props =>{
                 <p className="texto">Senha (confirmação):</p>
                 <input value={inputValueSenhaC} onChange={handleInputChangeSenhaC} type="password" placeholder="Digite sua senha: "  className="entrada"></input>
 
+                <div className="check">
                 <input type='checkbox' ></input>
+                <p>Você é um administrador?</p>
+                </div>
+                
 
                 <div className="div-botao">
                     <input className="botao" type="submit" value="Cadastrar" onClick={handleInputChangeBotao} ></input>

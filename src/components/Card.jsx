@@ -8,7 +8,19 @@ import './Card.css'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { BiSolidEnvelope } from "react-icons/bi";
+import { BiUser } from "react-icons/bi";
+import { BiSolidUser } from "react-icons/bi";
+import { BiLock } from "react-icons/bi";
+import { BiSolidLock } from "react-icons/bi";
+
 export default props =>{
+
+    //regex
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    function isValidEmail(email){
+      return emailRegex.test(email);
+    }
 
     //valores e setters dos inputs
     const [inputValueNome, setInputValueNome] = useState('');
@@ -38,60 +50,98 @@ export default props =>{
         setInputValueSenhaC(event.target.value);
       };
 
-    //Quando apertar o botão, cria a pessoa e para teste, coloca printa a pessoa no console
+    //Quando apertar o botão, teste se todas as informações estão coerentes, salva e cria uma pessoa. 
       const handleInputChangeBotao = (event) => {
-        if((inputValueNome===inputValueSenhaC)){
-          toast("Cadastro com sucesso =)");
-          const person = new Person(inputValueNome,inputValueSobrenome,inputValueEmail,inputValueSenha)
-          console.log(person)
-          const json = JSON.stringify(person)
-          console.log(json)
-          event.preventDefault();
+        if(inputValueNome.length===0){
+          toast("Nome está vazio =(");
+
         }
-       else{
-        toast("Senhas não são iguais =(");
+        else if(inputValueSobrenome.length===0){
+          toast("Sobrenome está vazio =(");
+        }
+        else if(inputValueEmail.length===0){
+          toast("E-mail está vazio =(");
+        }
+        else if(inputValueSenha.length===0){
+          toast("Senha está vazia =(");
+        }
+        else if(inputValueSenhaC.length===0){
+          toast("Senha (confirmação) está vazia =(");
+        }
+        else if(!isValidEmail(inputValueEmail)){
+          toast("E-mail inválido");
+
+        }
+        
+        else{
+          toast("Usuário cadastrado com sucesso");
+          setInputValueNome('');
+          setInputValueSobrenome('');
+          setInputValueEmail('');
+          setInputValueSenha('');
+          setInputValueSenhaC('');
+        }
+
         event.preventDefault();
-       }
-        
-        
-        
-      };
+      }
 
 
 
     return(
+      <div>
         <div className="Card">
             <form>
-                <h1 className="titulo">Criar uma conta no Projeto</h1>
+                <h1 className="titulo">Criar uma conta no EventNow</h1>
 
-                <p className="texto">Nome:</p>
-                <input value={inputValueNome} onChange={handleInputChangeNome} placeholder="Digite seu nome" className="entrada"></input>
+               <p className="texto">Nome:</p>
+                <div className="icons">
+                  <BiUser></BiUser>
+                  <input value={inputValueNome} onChange={handleInputChangeNome} placeholder="Digite seu nome" className="entrada"></input>
+                </div>
 
                 <p className="texto">Sobrenome:</p>
-                <input value={inputValueSobrenome} onChange={handleInputChangeSobrenome} placeholder="Digite seusobrenome" className="entrada"></input>
+                <div className="icons">
+                  <BiSolidUser></BiSolidUser>
+                  <input value={inputValueSobrenome} onChange={handleInputChangeSobrenome} placeholder="Digite seu sobrenome" className="entrada"></input>
+
+                </div>
 
                 <p className="texto">Email:</p>
-                <input value={inputValueEmail} onChange={handleInputChangeEmail} placeholder="Ex.: leticia@mail.com" className="entrada"></input>
-
-                <p className="texto">Senha:</p>
-                <input value={inputValueSenha} onChange={handleInputChangeSenha} type="password" placeholder="Digite sua senha: " className="entrada"></input>
-
-                <p className="texto">Senha (confirmação):</p>
-                <input value={inputValueSenhaC} onChange={handleInputChangeSenhaC} type="password" placeholder="Digite sua senha: "  className="entrada"></input>
-
-                <div className="check">
-                <input type='checkbox' ></input>
-                <p>Você é um administrador?</p>
+                <div className="icons">
+                  <BiSolidEnvelope></BiSolidEnvelope>
+                  <input value={inputValueEmail} onChange={handleInputChangeEmail} placeholder="Ex.: leticia@mail.com" className="entrada"></input>
                 </div>
                 
-
-                <div className="div-botao">
-                    <input className="botao" type="submit" value="Cadastrar" onClick={handleInputChangeBotao} ></input>
+                <p className="texto">Senha:</p>
+                <div className="icons">
+                  <BiLock></BiLock>
+                  <input value={inputValueSenha} onChange={handleInputChangeSenha} type="password" placeholder="Digite sua senha: " className="entrada"></input>
                 </div>
 
-                <ToastContainer/>
+                <p className="texto">Senha (confirmação):</p>
+                <div className="icons">
+                  <BiSolidLock></BiSolidLock>
+                  <input value={inputValueSenhaC} onChange={handleInputChangeSenhaC} type="password" placeholder="Digite sua senha: "  className="entrada"></input>
+                </div>
+
+                <input type="file" className="input-img"></input>
+
+                <div className="div-check">
+                  <input type='checkbox' ></input>
+                  <p>Modo Administrador</p>
+                </div>
+                
+                <div className="div-botao">
+                    <input className="botao" type="submit" value="Cadastrar" onClick={handleInputChangeBotao} ></input>
+                    
+                </div>
+
+                
             </form>
             
         </div>
+        <ToastContainer/>
+      </div>
+        
     )
 }
